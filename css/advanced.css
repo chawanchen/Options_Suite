@@ -1,0 +1,43 @@
+/* Advanced analysis pages */
+.pill-row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+.pill-row.secondary { margin-bottom: 22px; }
+.pill { min-height: 38px; padding: 0 18px; border: 1px solid #ead4c6; border-radius: 999px; background: rgba(255,255,255,.76); color: var(--muted); font-size: 14px; font-weight: 850; cursor: pointer; }
+.pill:hover, .pill.active { background: var(--primary-dark); border-color: var(--primary-dark); color: #fff; }
+.advanced-chart-panel { padding: 28px 30px; min-height: 560px; }
+.analysis-chart-placeholder { position: relative; min-height: 420px; padding: 10px 10px 34px 48px; }
+.analysis-grid { min-height: 365px; position: relative; border-left: 1px solid #ead4c6; border-bottom: 1px solid #ead4c6; background-image: linear-gradient(to right, rgba(242,220,205,.55) 1px, transparent 1px), linear-gradient(to bottom, rgba(242,220,205,.55) 1px, transparent 1px); background-size: 10% 20%; }
+.analysis-axis-y { position: absolute; left: 2px; top: 48%; transform: rotate(-90deg); color: var(--muted); font-size: 12px; font-weight: 800; }
+.analysis-axis-x { text-align: center; margin-top: 12px; color: var(--muted); font-size: 12px; font-weight: 800; }
+.analysis-copy { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--light-muted); }
+.chart-caption { margin: 6px 0 0; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; font-weight: 750; line-height: 1.7; }
+.soft-badge { padding: 7px 12px; border-radius: 999px; background: var(--primary-soft); color: var(--primary-dark); font-size: 12px; font-weight: 900; }
+.advanced-form-workspace { display: grid; grid-template-columns: minmax(340px, .95fr) minmax(480px, 1.75fr); gap: 24px; align-items: start; }
+.advanced-form-workspace .stack-form { display: flex; flex-direction: column; gap: 14px; }
+.advanced-form-workspace .form-row { grid-template-columns: 138px minmax(0, 1fr); }
+.page-result-panel { min-height: 310px; }
+.demo-result { min-height: 230px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: var(--light-muted); }
+.demo-result-icon { font-size: 38px; margin-bottom: 12px; }
+.demo-result h3 { margin: 0; color: var(--muted); font-size: 16px; }
+.demo-result p { margin: 8px 0 0; color: var(--light-muted); font-weight: 750; font-size: 14px; }
+.form-section-label { margin: 7px 0 0; padding: 12px 0 7px; border-top: 1px dashed var(--line); color: var(--light-muted); font-size: 12px; font-weight: 950; letter-spacing: .04em; }
+.form-section-label:first-child { border-top: 0; padding-top: 0; }
+
+@media (max-width: 960px) { .advanced-form-workspace { grid-template-columns: 1fr; } }
+@media (max-width: 760px) { .advanced-form-workspace .form-row { grid-template-columns: 1fr; } .advanced-chart-panel { min-height: 460px; } .analysis-grid { min-height: 290px; } }
+
+/* Implied-volatility smile */
+.panel-subcopy { margin:6px 0 0; color:var(--muted); font-size:13px; font-weight:700; }
+.market-table-header,.market-row { display:grid; grid-template-columns:1fr 1fr 76px; gap:10px; align-items:center; }
+.market-table-header { margin:24px 0 8px; padding:0 6px; color:var(--primary-dark); font-size:13px; font-weight:900; }
+.market-rows { display:grid; gap:10px; }
+.market-row input { width:100%; height:46px; padding:0 14px; border:1px solid #ead4c6; border-radius:12px; background:#fff; color:var(--text); font-size:15px; font-weight:800; outline:none; }
+.market-row input:focus { border-color:var(--primary); box-shadow:0 0 0 4px rgba(230,169,130,.16); }
+.remove-row-btn { height:42px; border:0; border-radius:12px; background:#fff0ec; color:#b65f4b; font-weight:900; cursor:pointer; }
+.add-row-btn { width:100%; min-height:44px; margin-top:12px; border:1px dashed var(--primary); border-radius:12px; background:var(--primary-soft); color:var(--primary-dark); font-weight:900; cursor:pointer; }
+.plotly-chart { width:100%; min-height:360px; border:1px solid var(--line); border-radius:16px; background:linear-gradient(180deg,#fffdfb,#fff7f1); overflow:hidden; }
+.empty-chart { min-height:330px; display:grid; place-items:center; color:var(--light-muted); font-weight:800; }
+.iv-list { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-top:14px; }
+.iv-list div { padding:12px; border-radius:12px; background:var(--primary-soft); }
+.iv-list span { display:block; margin-bottom:4px; color:var(--muted); font-size:12px; font-weight:700; }
+.iv-list strong { color:var(--primary-dark); font-size:16px; }
+@media(max-width:700px){.market-table-header,.market-row{grid-template-columns:1fr 1fr 62px}.iv-list{grid-template-columns:1fr}}
