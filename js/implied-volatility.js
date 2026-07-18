@@ -1,0 +1,27 @@
+const M=OptionsMath;
+const ivForm=document.querySelector('#ivForm'), resultBox=document.querySelector('#resultBox');
+function num(form,name){return Number(form.elements[name].value)}
+function runSingle(){
+  try{
+    const asset=ivForm.elements.assetType.value,type=ivForm.elements.optionType.value,S=num(ivForm,'spotPrice'),K=num(ivForm,'strikePrice'),r=num(ivForm,'riskFreeRate')/100,T=M.years(num(ivForm,'timeToMaturity'),ivForm.elements.timeUnit.value),ratio=asset==='warrant'?num(ivForm,'exerciseRatio'):1;
+    let q=num(ivForm,'dividendYield')/100;if(asset==='futures')q=r;
+    const mp=num(ivForm,'marketPrice'),res=M.iv(mp/ratio,S,K,T,r,q,type);if(res.error)throw Error(res.error);
+    const p=M.bs(S,K,T,r,q,res.sigma),g=M.greeks(S,K,T,r,q,res.sigma),isC=type==='call';
+    const scale=x=>x*ratio;resultBox.className='result-content';resultBox.innerHTML=`<div class="result-meta">${res.method}｜迭代 ${res.iter} 次｜殘差 ${Number(res.residual).toExponential(2)}</div><table class="result-table"><tbody><tr class="main-value"><td>隱含波動度 σ</td><td>${(res.sigma*100).toFixed(4)}%</td></tr><tr><td>反代理論價格</td><td>${M.fmt((isC?p.call:p.put)*ratio)}</td></tr><tr><td>市場價格</td><td>${M.fmt(mp)}</td></tr><tr><td>Delta</td><td>${M.fmt(scale(isC?g.deltaC:g.deltaP))}</td></tr><tr><td>Gamma</td><td>${M.fmt(scale(g.gamma))}</td></tr><tr><td>Vega（每 1%）</td><td>${M.fmt(scale(g.vega))}</td></tr><tr><td>Theta（每日）</td><td>${M.fmt(scale(isC?g.thetaC:g.thetaP))}</td></tr><tr><td>Rho（每 1%）</td><td>${M.fmt(scale(isC?g.rhoC:g.rhoP))}</td></tr></tbody></table>`;
+  }catch(e){resultBox.className='error-box';resultBox.textContent=e.message}
+}
+ivForm.addEventListener('submit',e=>{e.preventDefault();runSingle()});
+ivForm.addEventListener('reset',()=>setTimeout(()=>{resultBox.className='demo-result';resultBox.innerHTML='<div class="demo-result-icon">σ</div><h3>等待輸入</h3><p>輸入市場價格後反推波動率</p>'},0));
+
+const smileForm=document.querySelector('#smileForm'),rowsBox=document.querySelector('#marketRows'),errorBox=document.querySelector('#smileError');
+function addRow(K='',price=''){const row=document.createElement('div');row.className='market-row';row.innerHTML=`<input type="number" step="any" class="strike-input" value="${K}" placeholder="履約價"><input type="number" step="any" class="price-input" value="${price}" placeholder="市場價格"><button type="button" class="remove-row-btn">刪除</button>`;rowsBox.appendChild(row)}
+function modelPrice(asset,side,S,K,T,r,sigma){const q=asset==='futures'?r:0;const p=M.bs(S,K,T,r,q,sigma);return side==='call'?p.call:p.put}
+function bisect(asset,side,S,K,mp,T,r){if(!(S>0&&K>0&&mp>0&&T>0))return null;let lo=.0001,hi=5,plo=modelPrice(asset,side,S,K,T,r,lo),phi=modelPrice(asset,side,S,K,T,r,hi);if(mp<plo||mp>phi)return null;let mid;for(let i=0;i<120;i++){mid=(lo+hi)/2;const pm=modelPrice(asset,side,S,K,T,r,mid);if(Math.abs(pm-mp)<1e-6)return mid*100;if(pm<mp)lo=mid;else hi=mid}return mid*100}
+function smileRows(){const asset=smileForm.elements.smileAssetType.value,side=smileForm.elements.smileSide.value,S=num(smileForm,'underlyingPrice'),r=num(smileForm,'smileRiskFreeRate')/100,T=num(smileForm,'smileDays')/365;if(!(S>0&&T>0))throw Error('標的價格與到期期限必須大於 0。');return [...rowsBox.querySelectorAll('.market-row')].map(row=>{const K=Number(row.querySelector('.strike-input').value),mp=Number(row.querySelector('.price-input').value);return {K,mp,iv:bisect(asset,side,S,K,mp,T,r)}})}
+function renderSmile(data){const valid=data.filter(x=>Number.isFinite(x.iv)).sort((a,b)=>a.K-b.K);document.querySelector('#ivList').innerHTML=data.map(x=>`<div><span>K ${x.K} / Price ${x.mp}</span><strong>${Number.isFinite(x.iv)?x.iv.toFixed(4)+'%':'無法計算'}</strong></div>`).join('');if(!valid.length){document.querySelector('#volSmileChart').innerHTML='<div class="empty-chart">目前沒有可繪製的 IV 資料</div>';return}Plotly.newPlot('volSmileChart',[{x:valid.map(x=>x.K),y:valid.map(x=>x.iv),customdata:valid.map(x=>x.mp),mode:'lines+markers',type:'scatter',name:'IV',line:{color:'#a96a46',width:4,shape:'spline',smoothing:1.2},marker:{size:9,color:'#fffaf6',line:{color:'#a96a46',width:2}},hovertemplate:'履約價 K：%{x}<br>市場價格：%{customdata}<br>IV：%{y:.4f}%<extra></extra>'}],{height:360,margin:{l:60,r:22,t:20,b:55},paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',font:{family:'Microsoft JhengHei',color:'#4c372c'},xaxis:{title:'履約價 K',gridcolor:'#f2dccd'},yaxis:{title:'IV (%)',gridcolor:'#f2dccd'},hoverlabel:{bgcolor:'#fff',bordercolor:'#e6a982',font:{color:'#4c372c'}}},{responsive:true,displayModeBar:false});setTimeout(()=>OptionsUI.ensureActions(),50)}
+function calculateSmile(){try{errorBox.hidden=true;renderSmile(smileRows())}catch(e){errorBox.hidden=false;errorBox.textContent=e.message}}
+smileForm.addEventListener('submit',e=>{e.preventDefault();calculateSmile()});
+document.querySelector('#addRowBtn').onclick=()=>addRow();
+rowsBox.addEventListener('click',e=>{if(e.target.classList.contains('remove-row-btn')){if(rowsBox.children.length<=1)return alert('至少保留一列。');e.target.closest('.market-row').remove();calculateSmile()}});
+smileForm.elements.smileAssetType.onchange=()=>{document.querySelector('#underlyingLabel').textContent=smileForm.elements.smileAssetType.value==='stock'?'股票價格':'期貨價格';calculateSmile()};
+smileForm.elements.smileSide.onchange=()=>{document.querySelector('#marketPriceHeader').textContent=smileForm.elements.smileSide.value==='call'?'Call 市場價格':'Put 市場價格';calculateSmile()};
