@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>敏感度分析｜Options Suite</title>
+<link href="css/base.css?v=20260718-4" rel="stylesheet"/>
+<link href="css/tool.css?v=20260718-4" rel="stylesheet"/>
+<link href="css/advanced.css?v=20260718-4" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+.two-column-workspace,.advanced-form-workspace,.strategy-workspace{display:block!important}
+.two-column-workspace>*+*,.advanced-form-workspace>*+*,.strategy-workspace>*+*{margin-top:24px!important}
+.panel,.input-panel,.result-panel,.page-result-panel,.advanced-chart-panel,.strategy-chart-panel,.formula-panel,#resultBox,#volSmileChart{position:static!important;inset:auto!important;transform:none!important}
+</style>
+</head>
+<body data-export="chart" data-page="greeks">
+<button aria-label="開啟選單" class="sidebar-toggle" id="sidebarToggle" type="button">☰</button>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<div class="tool-layout">
+<aside class="tool-sidebar" id="toolSidebar">
+<div class="sidebar-top">
+<div class="sidebar-brand">
+<div class="sidebar-title">選擇權分析工具</div>
+<div class="sidebar-subtitle">Options Suite</div>
+</div>
+<button aria-label="關閉選單" class="sidebar-close" id="sidebarClose" type="button">×</button>
+</div>
+<nav aria-label="主要選單" class="sidebar-nav">
+<section class="sidebar-section">
+<div class="nav-group-title">開始定價</div>
+<a class="sidebar-link" href="pricing.html">Black-Scholes 定價法</a>
+<a class="sidebar-link" href="binomial.html">二項式定價法</a>
+<a class="sidebar-link" href="monte-carlo.html">蒙地卡羅定價法</a>
+</section>
+<section class="sidebar-section">
+<div class="nav-group-title">交易策略</div>
+<a class="sidebar-link" href="strategy.html">交易策略工作台</a>
+</section>
+<section class="sidebar-section">
+<div class="nav-group-title">進階分析</div>
+<a class="sidebar-link active" href="greeks.html">敏感度分析</a>
+<a class="sidebar-link" href="implied-volatility.html">隱含波動度與笑狀波幅</a>
+<a class="sidebar-link" href="reality-check.html">實務檢查</a>
+</section>
+<section class="sidebar-section">
+<div class="nav-group-title">參考</div>
+<a class="sidebar-link" href="#formula">說明 / 公式</a>
+</section>
+</nav>
+<a class="back-home" href="index.html">← 回首頁</a>
+</aside>
+<main class="tool-content">
+<header class="tool-header"><h1>敏感度分析</h1><p>觀察 Greeks 對價內外程度或到期日的變化</p></header>
+<section class="pill-row" id="greekTabs">
+<button class="pill active" data-greek="Delta">Delta</button><button class="pill" data-greek="Gamma">Gamma</button><button class="pill" data-greek="Vega">Vega</button><button class="pill" data-greek="Theta">Theta</button><button class="pill" data-greek="Rho">Rho</button>
+</section>
+<section class="pill-row secondary" id="axisTabs"><button class="pill active" data-axis="不同價內外程度（S/K）">不同價內外程度（S/K）</button><button class="pill" data-axis="不同到期日">不同到期日</button></section>
+<section class="panel advanced-chart-panel">
+<div class="panel-title-row"><h2 id="chartTitle">Delta × 不同價內外程度（S/K）</h2><span class="soft-badge">Call / Put</span><button class="light-btn history-btn" type="button">使用紀錄</button></div>
+<div class="analysis-chart-placeholder" id="resultBox"><div class="analysis-axis-y">Greek value</div><div class="analysis-grid"><div class="analysis-copy"><strong>敏感度曲線區</strong><small>選擇上方指標與橫軸條件</small></div></div><div class="analysis-axis-x">S / K</div></div>
+<p class="chart-caption" id="chartCaption">Delta：標的價格變動 1 元時，選擇權價格的預期變化。</p>
+</section>
+<section class="panel formula-panel" id="formula"><h2>說明 / 公式</h2><p>Delta 衡量標的價格變動 1 單位時的選擇權價格變化；Gamma 是 Delta 對標的價格的敏感度；Vega 表示波動率變動 1% 的影響；Theta 為每經過一天的理論價值變化；Rho 表示利率變動 1% 的影響。曲線固定 K=100、σ=30%、r=5%、q=0；價內外程度圖固定 T=90/365，到期日圖固定 S=K=100。</p></section>
+</main>
+</div>
+<script src="js/math-core.js?v=20260718-4"></script><script src="js/tool.js?v=20260718-4"></script><script src="js/app-utils.js?v=20260718-4"></script><script src="js/greeks.js?v=20260718-4"></script>
+</body></html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>實務檢查｜Options Suite</title>
+<link href="css/base.css?v=20260718-4" rel="stylesheet"/>
+<link href="css/tool.css?v=20260718-4" rel="stylesheet"/>
+<link href="css/advanced.css?v=20260718-4" rel="stylesheet"/>
+<style>
+.two-column-workspace,.advanced-form-workspace,.strategy-workspace{display:block!important}
+.two-column-workspace>*+*,.advanced-form-workspace>*+*,.strategy-workspace>*+*{margin-top:24px!important}
+.panel,.input-panel,.result-panel,.page-result-panel,.advanced-chart-panel,.strategy-chart-panel,.formula-panel,#resultBox,#volSmileChart{position:static!important;inset:auto!important;transform:none!important}
+</style>
+</head>
+<body data-export="csv" data-page="reality-check">
+<button aria-label="開啟選單" class="sidebar-toggle" id="sidebarToggle" type="button">☰</button>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<div class="tool-layout">
+<aside class="tool-sidebar" id="toolSidebar">
+<div class="sidebar-top">
+<div class="sidebar-brand">
+<div class="sidebar-title">選擇權分析工具</div>
+<div class="sidebar-subtitle">Options Suite</div>
+</div>
+<button aria-label="關閉選單" class="sidebar-close" id="sidebarClose" type="button">×</button>
+</div>
+<nav aria-label="主要選單" class="sidebar-nav">
+<section class="sidebar-section">
+<div class="nav-group-title">開始定價</div>
+<a class="sidebar-link" href="pricing.html">Black-Scholes 定價法</a>
+<a class="sidebar-link" href="binomial.html">二項式定價法</a>
+<a class="sidebar-link" href="monte-carlo.html">蒙地卡羅定價法</a>
+</section>
+<section class="sidebar-section">
+<div class="nav-group-title">交易策略</div>
+<a class="sidebar-link" href="strategy.html">交易策略工作台</a>
+</section>
+<section class="sidebar-section">
+<div class="nav-group-title">進階分析</div>
+<a class="sidebar-link" href="greeks.html">敏感度分析</a>
+<a class="sidebar-link" href="implied-volatility.html">隱含波動度與笑狀波幅</a>
+<a class="sidebar-link active" href="reality-check.html">實務檢查</a>
+</section>
+<section class="sidebar-section">
+<div class="nav-group-title">參考</div>
+<a class="sidebar-link" href="#formula">說明 / 公式</a>
+</section>
+</nav>
+<a class="back-home" href="index.html">← 回首頁</a>
+</aside>
+<main class="tool-content"><header class="tool-header"><h1>實務檢查（Reality Check）</h1><p>比對市場價與理論價，檢核價差、流動性及交易成本</p></header>
+<section aria-label="資產類型" class="asset-tabs"><button class="asset-tab active" data-asset="stock" type="button">股票選擇權</button><button class="asset-tab" data-asset="warrant" type="button">認購（售）權證</button><button class="asset-tab" data-asset="index" type="button">股價指數選擇權</button><button class="asset-tab" data-asset="fx" type="button">外匯選擇權</button><button class="asset-tab" data-asset="futures" type="button">期貨選擇權</button></section>
+<section class="two-column-workspace advanced-form-workspace">
+<section class="panel input-panel"><div class="panel-title-row"><h2>輸入參數</h2><button class="light-btn history-btn" type="button">使用紀錄</button></div>
+<form class="stack-form" id="realityForm">
+<div class="form-section-label">選擇權類型</div><div class="form-row"><label for="optionType">Call / Put</label><select id="optionType" name="optionType"><option>Call 買權</option><option>Put 賣權</option></select></div>
+<div class="form-section-label">理論模型參數</div>
+<div class="form-row"><label for="spotPrice">股票價格<button class="help-dot" data-help="此欄位為模型輸入參數。" type="button">?</button></label><input id="spotPrice" name="spotPrice" type="number"/></div><div class="form-row"><label for="strikePrice">履約價<button class="help-dot" data-help="此欄位為模型輸入參數。" type="button">?</button></label><input id="strikePrice" name="strikePrice" type="number"/></div><div class="form-row"><label for="volatility">波動率 (%)<button class="help-dot" data-help="此欄位為模型輸入參數。" type="button">?</button></label><input id="volatility" name="volatility" type="number"/></div><div class="form-row"><label for="riskFreeRate">無風險利率 (%)<button class="help-dot" data-help="此欄位為模型輸入參數。" type="button">?</button></label><input id="riskFreeRate" name="riskFreeRate" type="number"/></div><div class="form-row"><label for="timeToMaturity">到期期限<button class="help-dot" data-help="距離到期的時間長度。" type="button">?</button></label><div class="input-with-select"><input id="timeToMaturity" name="timeToMaturity" type="number"/><select id="timeUnit" name="timeUnit"><option>天</option><option>月</option><option>年</option></select></div></div><div class="form-row"><label for="dividendYield">股利率 (%)<button class="help-dot" data-help="此欄位為模型輸入參數。" type="button">?</button></label><input id="dividendYield" name="dividendYield" type="number"/></div><div class="form-row"><label for="exerciseRatio">執行比例<button class="help-dot" data-help="此欄位為模型輸入參數。" type="button">?</button></label><input id="exerciseRatio" name="exerciseRatio" type="number"/></div>
+<div class="form-section-label">市場觀察</div>
+<div class="form-row"><label for="bidPrice">Bid 買價<button class="help-dot" data-help="此欄位為模型輸入參數。" type="button">?</button></label><input id="bidPrice" name="bidPrice" type="number"/></div><div class="form-row"><label for="askPrice">Ask 賣價<button class="help-dot" data-help="此欄位為模型輸入參數。" type="button">?</button></label><input id="askPrice" name="askPrice" type="number"/></div><div class="form-row"><label for="lastPrice">成交價<button class="help-dot" data-help="此欄位為模型輸入參數。" type="button">?</button></label><input id="lastPrice" name="lastPrice" type="number"/></div><div class="form-row"><label for="volume">成交量<button class="help-dot" data-help="此欄位為模型輸入參數。" type="button">?</button></label><input id="volume" name="volume" type="number"/></div><div class="form-row"><label for="openInterest">未平倉量<button class="help-dot" data-help="此欄位為模型輸入參數。" type="button">?</button></label><input id="openInterest" name="openInterest" type="number"/></div>
+<div class="form-actions"><button class="solid-btn" type="submit">開始分析</button><button class="outline-btn" type="reset">重設</button></div>
+</form>
+</section>
+<section class="panel result-panel page-result-panel"><h2>分析結果</h2><div class="demo-result" id="resultBox"><h3>等待輸入</h3><p>填入理論參數與市場觀察後按「開始分析」</p></div></section>
+</section>
+<section class="panel formula-panel" id="formula"><h2>說明 / 公式</h2><p>市場中間價=(Bid+Ask)/2，價差=Ask−Bid，價差比例=價差/中間價。系統比較 Black–Scholes 理論價與市場中間價，並依價差比例、成交量、未平倉量、剩餘天數與市場 IV 提示異常。警示門檻只用於教學展示，不代表標的必然高估、低估或可套利。</p></section>
+</main></div><script src="js/math-core.js?v=20260718-4"></script><script src="js/tool.js?v=20260718-4"></script><script src="js/app-utils.js?v=20260718-4"></script><script src="js/reality-check.js?v=20260718-4"></script></body></html>

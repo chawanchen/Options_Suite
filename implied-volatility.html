@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>隱含波動度與笑狀波幅｜Options Suite</title>
+  <link rel="stylesheet" href="css/base.css?v=20260718-4" />
+  <link rel="stylesheet" href="css/tool.css?v=20260718-4" />
+  <link rel="stylesheet" href="css/advanced.css?v=20260718-4" />
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<style>
+.two-column-workspace,.advanced-form-workspace,.strategy-workspace{display:block!important}
+.two-column-workspace>*+*,.advanced-form-workspace>*+*,.strategy-workspace>*+*{margin-top:24px!important}
+.panel,.input-panel,.result-panel,.page-result-panel,.advanced-chart-panel,.strategy-chart-panel,.formula-panel,#resultBox,#volSmileChart{position:static!important;inset:auto!important;transform:none!important}
+</style>
+</head>
+<body data-page="implied-volatility" data-export="chart">
+<button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="開啟選單">☰</button>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<div class="tool-layout">
+  <aside class="tool-sidebar" id="toolSidebar">
+    <div class="sidebar-top"><div class="sidebar-brand"><div class="sidebar-title">選擇權分析工具</div><div class="sidebar-subtitle">Options Suite</div></div><button type="button" class="sidebar-close" id="sidebarClose" aria-label="關閉選單">×</button></div>
+    <nav class="sidebar-nav">
+      <section class="sidebar-section"><div class="nav-group-title">開始定價</div><a href="pricing.html" class="sidebar-link">Black-Scholes 定價法</a><a href="binomial.html" class="sidebar-link">二項式定價法</a><a href="monte-carlo.html" class="sidebar-link">蒙地卡羅定價法</a></section>
+      <section class="sidebar-section"><div class="nav-group-title">交易策略</div><a href="strategy.html" class="sidebar-link">交易策略工作台</a></section>
+      <section class="sidebar-section"><div class="nav-group-title">進階分析</div><a href="greeks.html" class="sidebar-link">敏感度分析</a><a href="implied-volatility.html" class="sidebar-link active">隱含波動度與笑狀波幅</a><a href="reality-check.html" class="sidebar-link">實務檢查</a></section>
+      <section class="sidebar-section"><div class="nav-group-title">參考</div><a href="#formula" class="sidebar-link">說明 / 公式</a></section>
+    </nav><a href="index.html" class="back-home">← 回首頁</a>
+  </aside>
+  <main class="tool-content">
+    <header class="tool-header"><h1>隱含波動度與笑狀波幅</h1><p>由單一市場價格反推 IV，或輸入多組履約價與權利金繪製波動度曲線</p></header>
+
+    <section class="workspace-stack">
+      <section class="panel input-panel">
+        <div class="panel-title-row"><h2>單一合約 IV</h2><button type="button" class="light-btn history-btn">使用紀錄</button></div>
+        <form id="ivForm" class="pricing-form">
+          <div class="form-row"><label for="assetType">商品類型</label><select id="assetType" name="assetType"><option>股票選擇權</option><option>認購（售）權證</option><option>股價指數選擇權</option><option>外匯選擇權</option><option>期貨選擇權</option></select></div>
+          <div class="form-row"><label for="optionType">選擇權類型</label><select id="optionType" name="optionType"><option>買權 Call</option><option>賣權 Put</option></select></div>
+          <div class="form-row"><label for="marketPrice">市場價格</label><input id="marketPrice" name="marketPrice" type="number" step="any" /></div>
+          <div class="form-row"><label for="spotPrice">標的價格</label><input id="spotPrice" name="spotPrice" type="number" step="any" /></div>
+          <div class="form-row"><label for="strikePrice">履約價格</label><input id="strikePrice" name="strikePrice" type="number" step="any" /></div>
+          <div class="form-row"><label for="riskFreeRate">無風險利率 (%)</label><input id="riskFreeRate" name="riskFreeRate" type="number" step="any" /></div>
+          <div class="form-row"><label for="timeToMaturity">到期期限</label><div class="input-with-select"><input id="timeToMaturity" name="timeToMaturity" type="number" step="any" /><select id="timeUnit" name="timeUnit"><option>天</option><option>月</option><option>年</option></select></div></div>
+          <div class="form-row"><label for="dividendYield">股利／國外利率 (%)</label><input id="dividendYield" name="dividendYield" type="number" step="any" /></div>
+          <div class="form-row"><label for="exerciseRatio">執行比例</label><input id="exerciseRatio" name="exerciseRatio" type="number" step="any" /></div>
+          <div class="form-actions"><button class="solid-btn" type="submit">計算 IV</button><button class="outline-btn" type="reset">重設</button></div>
+        </form>
+      </section>
+      <section class="panel result-panel"><h2>單一合約結果</h2><div id="resultBox" class="demo-result"><h3>等待輸入</h3><p>輸入市場價格與其他參數後開始計算</p></div></section>
+
+      <section class="panel input-panel smile-panel">
+        <div class="panel-title-row"><div><h2>笑狀波幅資料</h2><p class="panel-subcopy">輸入任意組履約價與市場價格，系統以二分法反推各點 IV。</p></div><button type="button" class="light-btn history-btn">使用紀錄</button></div>
+        <form id="smileForm">
+          <div class="pricing-form">
+            <div class="form-row"><label for="smileAssetType">商品類型</label><select id="smileAssetType" name="smileAssetType"><option>股票選擇權</option><option selected>期貨選擇權</option></select></div>
+            <div class="form-row"><label for="smileSide">選擇權類型</label><select id="smileSide" name="smileSide"><option>Call</option><option>Put</option></select></div>
+            <div class="form-row"><label for="underlyingPrice" id="underlyingLabel">期貨價格</label><input id="underlyingPrice" name="underlyingPrice" type="number" step="any" /></div>
+            <div class="form-row"><label for="smileRiskFreeRate">無風險利率 (%)</label><input id="smileRiskFreeRate" name="smileRiskFreeRate" type="number" step="any" /></div>
+            <div class="form-row"><label for="smileDays">到期期限（天）</label><input id="smileDays" name="smileDays" type="number" step="any" /></div>
+          </div>
+          <div class="market-table-header"><div>履約價 K</div><div id="marketPriceHeader">Call 市場價格</div><div></div></div>
+          <div id="marketRows" class="market-rows">
+            <div class="market-row"><input type="number" step="any" class="strike-input"><input type="number" step="any" class="price-input"><button type="button" class="remove-row-btn">刪除</button></div>
+            <div class="market-row"><input type="number" step="any" class="strike-input"><input type="number" step="any" class="price-input"><button type="button" class="remove-row-btn">刪除</button></div>
+            <div class="market-row"><input type="number" step="any" class="strike-input"><input type="number" step="any" class="price-input"><button type="button" class="remove-row-btn">刪除</button></div>
+            <div class="market-row"><input type="number" step="any" class="strike-input"><input type="number" step="any" class="price-input"><button type="button" class="remove-row-btn">刪除</button></div>
+            <div class="market-row"><input type="number" step="any" class="strike-input"><input type="number" step="any" class="price-input"><button type="button" class="remove-row-btn">刪除</button></div>
+          </div>
+          <button type="button" class="add-row-btn" id="addRowBtn">新增一列</button>
+          <div class="form-actions"><button class="solid-btn" type="submit">反推 IV 並畫圖</button></div>
+        </form>
+        <div class="error-box" id="smileError" hidden></div>
+      </section>
+      <section class="panel result-panel result-card"><div class="panel-title-row"><h2>笑狀波幅圖</h2><span class="soft-badge">Plotly</span></div><div class="plotly-chart" id="volSmileChart"></div><div class="iv-list" id="ivList"></div><p class="formula-note">若顯示「無法計算」，通常代表市場價格不在合理理論界線內。</p></section>
+    </section>
+    <section class="panel formula-panel" id="formula"><h2>說明 / 公式</h2><p>隱含波動度是使理論價格等於市場價格的 σ。單點 IV 先使用 Newton–Raphson，當 Vega 過小或迭代超出合理區間時改用二分法；市場價格必須位於無套利上下界內。笑狀波幅依各履約價逐點反推 IV 後排序繪圖，全站到期天數統一採 ACT/365。</p></section>
+  </main>
+</div>
+<script src="js/math-core.js?v=20260718-4"></script><script src="js/tool.js?v=20260718-4"></script><script src="js/app-utils.js?v=20260718-4"></script><script src="js/implied-volatility.js?v=20260718-4"></script>
+</body></html>

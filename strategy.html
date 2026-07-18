@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>交易策略｜Options Suite</title>
+<link href="css/base.css?v=20260718-4" rel="stylesheet"/>
+<link href="css/tool.css?v=20260718-4" rel="stylesheet"/>
+<link href="css/strategy.css?v=20260718-4" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+.two-column-workspace,.advanced-form-workspace,.strategy-workspace{display:block!important}
+.two-column-workspace>*+*,.advanced-form-workspace>*+*,.strategy-workspace>*+*{margin-top:24px!important}
+.panel,.input-panel,.result-panel,.page-result-panel,.advanced-chart-panel,.strategy-chart-panel,.formula-panel,#resultBox,#volSmileChart{position:static!important;inset:auto!important;transform:none!important}
+</style>
+</head>
+<body data-export="chart" data-page="strategy">
+<button aria-label="開啟選單" class="sidebar-toggle" id="sidebarToggle" type="button">☰</button>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<div class="tool-layout">
+<aside class="tool-sidebar" id="toolSidebar">
+<div class="sidebar-top">
+<div class="sidebar-brand">
+<div class="sidebar-title">選擇權分析工具</div>
+<div class="sidebar-subtitle">Options Suite</div>
+</div>
+<button aria-label="關閉選單" class="sidebar-close" id="sidebarClose" type="button">×</button>
+</div>
+<nav aria-label="主要選單" class="sidebar-nav">
+<section class="sidebar-section">
+<div class="nav-group-title">開始定價</div>
+<a class="sidebar-link" href="pricing.html">Black-Scholes 定價法</a>
+<a class="sidebar-link" href="binomial.html">二項式定價法</a>
+<a class="sidebar-link" href="monte-carlo.html">蒙地卡羅定價法</a>
+</section>
+<section class="sidebar-section">
+<div class="nav-group-title">交易策略</div>
+<a class="sidebar-link active" href="strategy.html">交易策略工作台</a>
+</section>
+<section class="sidebar-section">
+<div class="nav-group-title">進階分析</div>
+<a class="sidebar-link" href="greeks.html">敏感度分析</a>
+<a class="sidebar-link" href="implied-volatility.html">隱含波動度與笑狀波幅</a>
+<a class="sidebar-link" href="reality-check.html">實務檢查</a>
+</section>
+<section class="sidebar-section">
+<div class="nav-group-title">參考</div>
+<a class="sidebar-link" href="#formula">說明 / 公式</a>
+</section>
+</nav>
+<a class="back-home" href="index.html">← 回首頁</a>
+</aside>
+<main class="tool-content">
+<header class="tool-header"><h1>交易策略</h1><p>建立單一或多腿部位，預覽到期損益圖與策略摘要</p></header>
+<section aria-label="策略分類" class="page-tabs strategy-tabs">
+<button class="page-tab active" data-strategy="single">單一部位</button>
+<button class="page-tab" data-strategy="covered">避險部位</button>
+<button class="page-tab" data-strategy="straddle">跨式策略</button>
+<button class="page-tab" data-strategy="spread">價差策略</button>
+<button class="page-tab" data-strategy="synthetic">合成期貨</button>
+<button class="page-tab" data-strategy="butterfly">蝶式 Butterfly</button>
+<button class="page-tab" data-strategy="condor">兀鷹 Iron Condor</button>
+</section>
+<section class="strategy-workspace">
+<section class="panel input-panel strategy-input">
+<div class="panel-title-row"><h2 id="strategyTitle">單一部位</h2><button class="light-btn history-btn" type="button">使用紀錄</button></div>
+<form class="stack-form" id="strategyForm">
+<div class="form-row"><label for="positionType">類型</label><select id="positionType" name="positionType"><option>買權（Long Call）</option><option>賣權（Long Put）</option><option>賣出買權（Short Call）</option><option>賣出賣權（Short Put）</option></select></div>
+<div class="form-row"><label for="spotPrice">資產價格 S<button class="help-dot" data-help="此欄位為模型輸入參數。" type="button">?</button></label><input id="spotPrice" name="spotPrice" type="number"/></div><div class="form-row"><label for="strikePrice">履約價 K<button class="help-dot" data-help="此欄位為模型輸入參數。" type="button">?</button></label><input id="strikePrice" name="strikePrice" type="number"/></div><div class="form-row"><label for="premium">權利金<button class="help-dot" data-help="此欄位為模型輸入參數。" type="button">?</button></label><input id="premium" name="premium" type="number"/></div><div class="form-row"><label for="timeToMaturity">到期期限<button class="help-dot" data-help="距離到期的時間長度。" type="button">?</button></label><div class="input-with-select"><input id="timeToMaturity" name="timeToMaturity" type="number"/><select id="timeUnit" name="timeUnit"><option>天</option><option>月</option><option>年</option></select></div></div><div class="form-row"><label for="volatility">波動率 (%)<button class="help-dot" data-help="此欄位為模型輸入參數。" type="button">?</button></label><input id="volatility" name="volatility" type="number"/></div><div class="form-row"><label for="riskFreeRate">無風險利率 (%)<button class="help-dot" data-help="此欄位為模型輸入參數。" type="button">?</button></label><input id="riskFreeRate" name="riskFreeRate" type="number"/></div><div class="form-row"><label for="xMin">X 軸下界<button class="help-dot" data-help="此欄位為模型輸入參數。" type="button">?</button></label><input id="xMin" name="xMin" type="number"/></div><div class="form-row"><label for="xMax">X 軸上界<button class="help-dot" data-help="此欄位為模型輸入參數。" type="button">?</button></label><input id="xMax" name="xMax" type="number"/></div>
+<div class="form-actions"><button class="solid-btn" type="submit">繪圖</button><button class="outline-btn" type="reset">清除</button></div>
+</form>
+</section>
+<section class="panel strategy-chart-panel">
+<div class="panel-title-row"><h2>到期損益圖</h2><span class="soft-badge" id="strategyBadge">單一部位</span></div>
+<div class="chart-placeholder" id="resultBox">
+<div class="chart-y-label">損益 (P&amp;L)</div>
+<div class="chart-grid"><div class="chart-zero-line"></div><div class="chart-spot-line"></div><div class="chart-empty-copy"><strong>等待繪圖</strong><small>輸入參數後按「繪圖」</small></div></div>
+<div class="chart-x-label">到期日標的價格 S_T</div>
+</div>
+</section>
+</section>
+<section class="panel formula-panel" id="formula"><h2>說明 / 公式</h2><p>圖表呈現各腿部在到期日的權利金損益加總。買進 Call 的損益為 max(Sₜ−K, 0)−權利金；買進 Put 為 max(K−Sₜ, 0)−權利金，賣方部位則取相反數。損益兩平點為總損益等於 0 的到期標的價格。本頁只分析到期損益，因此不需要波動率、利率或剩餘期限。</p></section>
+</main>
+</div>
+<script src="js/math-core.js?v=20260718-4"></script><script src="js/tool.js?v=20260718-4"></script><script src="js/app-utils.js?v=20260718-4"></script><script src="js/strategy.js?v=20260718-4"></script>
+</body></html>

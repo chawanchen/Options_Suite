@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>二項式評價模型｜Options Suite</title>
+<link href="css/base.css?v=20260718-4" rel="stylesheet"/>
+<link href="css/tool.css?v=20260718-4" rel="stylesheet"/>
+<link href="css/pricing.css?v=20260718-4" rel="stylesheet"/>
+<style>
+.two-column-workspace,.advanced-form-workspace,.strategy-workspace{display:block!important}
+.two-column-workspace>*+*,.advanced-form-workspace>*+*,.strategy-workspace>*+*{margin-top:24px!important}
+.panel,.input-panel,.result-panel,.page-result-panel,.advanced-chart-panel,.strategy-chart-panel,.formula-panel,#resultBox,#volSmileChart{position:static!important;inset:auto!important;transform:none!important}
+</style>
+</head>
+<body data-export="csv" data-page="binomial">
+<button aria-label="開啟選單" class="sidebar-toggle" id="sidebarToggle" type="button">☰</button>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<div class="tool-layout">
+<aside class="tool-sidebar" id="toolSidebar">
+<div class="sidebar-top">
+<div class="sidebar-brand">
+<div class="sidebar-title">選擇權分析工具</div>
+<div class="sidebar-subtitle">Options Suite</div>
+</div>
+<button aria-label="關閉選單" class="sidebar-close" id="sidebarClose" type="button">×</button>
+</div>
+<nav aria-label="主要選單" class="sidebar-nav">
+<section class="sidebar-section">
+<div class="nav-group-title">開始定價</div>
+<a class="sidebar-link" href="pricing.html">Black-Scholes 定價法</a>
+<a class="sidebar-link active" href="binomial.html">二項式定價法</a>
+<a class="sidebar-link" href="monte-carlo.html">蒙地卡羅定價法</a>
+</section>
+<section class="sidebar-section">
+<div class="nav-group-title">交易策略</div>
+<a class="sidebar-link" href="strategy.html">交易策略工作台</a>
+</section>
+<section class="sidebar-section">
+<div class="nav-group-title">進階分析</div>
+<a class="sidebar-link" href="greeks.html">敏感度分析</a>
+<a class="sidebar-link" href="implied-volatility.html">隱含波動度與笑狀波幅</a>
+<a class="sidebar-link" href="reality-check.html">實務檢查</a>
+</section>
+<section class="sidebar-section">
+<div class="nav-group-title">參考</div>
+<a class="sidebar-link" href="#formula">說明 / 公式</a>
+</section>
+</nav>
+<a class="back-home" href="index.html">← 回首頁</a>
+</aside>
+<main class="tool-content">
+<header class="tool-header"><h1>二項式評價模型</h1><p>CRR 樹狀模型，可延伸歐式與美式選擇權</p></header>
+<section class="two-column-workspace">
+<section class="panel input-panel">
+<div class="panel-title-row"><h2>輸入參數</h2><button class="light-btn history-btn" type="button">使用紀錄</button></div>
+<form class="stack-form" id="binomialForm">
+<div class="form-row"><label for="spotPrice">資產價格<button class="help-dot" data-help="此欄位為模型輸入參數。" type="button">?</button></label><input id="spotPrice" name="spotPrice" type="number"/></div><div class="form-row"><label for="strikePrice">履約價格<button class="help-dot" data-help="此欄位為模型輸入參數。" type="button">?</button></label><input id="strikePrice" name="strikePrice" type="number"/></div><div class="form-row"><label for="volatility">波動度 (%)<button class="help-dot" data-help="此欄位為模型輸入參數。" type="button">?</button></label><input id="volatility" name="volatility" type="number"/></div><div class="form-row"><label for="riskFreeRate">無風險利率 (%)<button class="help-dot" data-help="此欄位為模型輸入參數。" type="button">?</button></label><input id="riskFreeRate" name="riskFreeRate" type="number"/></div><div class="form-row"><label for="timeToMaturity">到期期限<button class="help-dot" data-help="距離到期的時間長度。" type="button">?</button></label><div class="input-with-select"><input id="timeToMaturity" name="timeToMaturity" type="number"/><select id="timeUnit" name="timeUnit"><option>天</option><option>月</option><option>年</option></select></div></div><div class="form-row"><label for="dividendYield">股利率 (%)<button class="help-dot" data-help="此欄位為模型輸入參數。" type="button">?</button></label><input id="dividendYield" name="dividendYield" type="number"/></div><div class="form-row"><label for="steps">分割期數<button class="help-dot" data-help="此欄位為模型輸入參數。" type="button">?</button></label><input id="steps" name="steps" type="number"/></div>
+<div class="form-actions"><button class="solid-btn" type="submit">計算結果</button><button class="outline-btn" type="reset">清除</button></div>
+</form>
+</section>
+<section class="panel result-panel page-result-panel"><h2>結果視窗</h2><div class="demo-result" id="resultBox"><h3>等待輸入</h3><p>輸入參數後按計算結果</p></div></section>
+</section>
+<section class="panel formula-panel" id="formula"><h2>說明 / 公式</h2><p>CRR 模型設 u=e^(σ√Δt)、d=1/u，風險中立機率 p=[e^((r−q)Δt)−d]/(u−d)。到期給付由樹尾向前折現；美式選擇權在每個節點取「繼續持有價值」與「立即履約價值」中較大者。期數越多通常越接近連續時間結果，但計算量也越大。</p></section>
+</main>
+</div>
+<script src="js/math-core.js?v=20260718-4"></script><script src="js/tool.js?v=20260718-4"></script><script src="js/app-utils.js?v=20260718-4"></script><script src="js/binomial.js?v=20260718-4"></script>
+</body></html>
