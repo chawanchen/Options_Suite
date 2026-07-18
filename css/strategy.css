@@ -1,0 +1,43 @@
+/* Strategy Builder */
+.page-tabs {
+  display: flex;
+  gap: 30px;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 24px;
+}
+.page-tab {
+  position: relative;
+  flex: 0 0 auto;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  padding: 0 0 14px;
+  font-size: 15px;
+  font-weight: 850;
+  cursor: pointer;
+}
+.page-tab:hover, .page-tab.active { color: var(--primary-dark); }
+.page-tab.active::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 3px; border-radius: 999px 999px 0 0; background: var(--primary-dark); }
+.strategy-workspace { display: grid; grid-template-columns: minmax(330px, 0.9fr) minmax(500px, 1.9fr); gap: 24px; align-items: start; }
+.strategy-input .stack-form { display: flex; flex-direction: column; gap: 14px; }
+.strategy-input .form-row { grid-template-columns: 122px minmax(0, 1fr); }
+.strategy-chart-panel { min-height: 535px; padding: 28px 30px; }
+.soft-badge { padding: 7px 12px; border-radius: 999px; background: var(--primary-soft); color: var(--primary-dark); font-size: 12px; font-weight: 900; }
+.chart-placeholder { position: relative; min-height: 390px; padding: 16px 12px 34px 46px; }
+.chart-grid, .analysis-grid {
+  position: relative; min-height: 335px; border-left: 1px solid #ead4c6; border-bottom: 1px solid #ead4c6;
+  background-image: linear-gradient(to right, rgba(242,220,205,.55) 1px, transparent 1px), linear-gradient(to bottom, rgba(242,220,205,.55) 1px, transparent 1px);
+  background-size: 12.5% 20%;
+}
+.chart-zero-line { position: absolute; left: 0; right: 0; top: 58%; border-top: 2px solid rgba(169,106,70,.35); }
+.chart-spot-line { position: absolute; top: 0; bottom: 0; left: 50%; border-left: 2px dashed rgba(139,118,104,.6); }
+.chart-empty-copy, .analysis-copy { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--light-muted); text-align: center; }
+.chart-empty-copy span, .analysis-copy span { font-size: 34px; }
+.chart-empty-copy strong, .analysis-copy strong { color: var(--muted); margin-top: 10px; }
+.chart-empty-copy small, .analysis-copy small { margin-top: 6px; font-weight: 750; }
+.chart-y-label { position: absolute; left: 2px; top: 48%; transform: rotate(-90deg); color: var(--muted); font-size: 12px; font-weight: 800; }
+.chart-x-label { text-align: center; margin-top: 12px; color: var(--muted); font-size: 12px; font-weight: 800; }
+
+@media (max-width: 980px) { .strategy-workspace { grid-template-columns: 1fr; } }
+@media (max-width: 760px) { .strategy-input .form-row { grid-template-columns: 1fr; } .strategy-chart-panel { min-height: 440px; } .chart-grid { min-height: 280px; } }

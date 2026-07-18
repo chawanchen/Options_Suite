@@ -1,0 +1,286 @@
+/* =========================================================
+   Home Page
+========================================================= */
+
+.page {
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 48px 0 38px;
+}
+
+.brand {
+  margin-bottom: 52px;
+}
+
+.brand-kicker {
+  margin-bottom: 8px;
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.brand-title {
+  margin: 0;
+  font-size: 34px;
+  font-weight: 950;
+  letter-spacing: -0.04em;
+  line-height: 1.12;
+  color: var(--text);
+}
+
+.brand-description {
+  max-width: 620px;
+  margin: 14px 0 0;
+  font-size: 16px;
+  line-height: 1.8;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+.feature-card {
+  min-height: 330px;
+  padding: 34px 34px 30px;
+
+  border-radius: 34px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  box-shadow: var(--shadow);
+
+  display: flex;
+  flex-direction: column;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  border-color: #ecc6ad;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: var(--shadow-hover);
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.number {
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+
+  color: var(--primary-dark);
+  background: #ffe7d6;
+
+  font-weight: 950;
+  font-size: 17px;
+}
+
+.feature-card h2 {
+  margin: 0;
+  font-size: 30px;
+  line-height: 1.15;
+  letter-spacing: -0.04em;
+  color: var(--text);
+}
+
+.card-subtitle {
+  display: inline-block;
+  margin-top: 7px;
+
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  color: var(--light-muted);
+}
+
+.feature-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.85;
+  font-weight: 700;
+}
+
+.tags {
+  margin-top: auto;
+  padding-top: 30px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+
+  width: 100%;
+}
+
+.tag {
+  width: 220px;
+  height: 42px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+  white-space: nowrap;
+
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid #f2d2bd;
+
+  background: rgba(255, 247, 241, 0.88);
+  color: var(--primary-dark);
+
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1.2;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.tag:hover {
+  background: var(--primary-dark);
+  border-color: var(--primary-dark);
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(169, 106, 70, 0.18);
+}
+
+.strategy-main {
+  margin-top: 34px;
+  padding-top: 0;
+}
+
+.strategy-tag {
+  width: 220px;
+  height: 42px;
+
+  background: rgba(255, 247, 241, 0.88);
+  border-color: #f2d2bd;
+  color: var(--primary-dark);
+
+  box-shadow: none;
+}
+
+.strategy-tag:hover {
+  background: var(--primary-dark);
+  border-color: var(--primary-dark);
+  color: #fff;
+
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(169, 106, 70, 0.18);
+}
+
+.footer {
+  margin-top: 34px;
+  text-align: center;
+  color: var(--light-muted);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.7;
+  opacity: 0.7;
+}
+
+/* =========================================================
+   Home Responsive
+========================================================= */
+
+@media (max-width: 900px) {
+  .page {
+    width: min(100% - 30px, 720px);
+    padding-top: 32px;
+  }
+
+  .brand {
+    margin-bottom: 34px;
+  }
+
+  .brand-title {
+    font-size: 30px;
+  }
+
+  .brand-description {
+    font-size: 15px;
+  }
+
+  .feature-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .feature-card {
+    min-height: auto;
+    padding: 28px;
+    border-radius: 30px;
+  }
+
+  .card-head {
+    margin-bottom: 22px;
+  }
+
+  .tags {
+    margin-top: 0;
+    padding-top: 28px;
+  }
+
+  .strategy-main {
+    margin-top: 28px;
+    padding-top: 0;
+  }
+}
+
+@media (max-width: 520px) {
+  .page {
+    width: min(100% - 26px, 480px);
+  }
+
+  .brand-title {
+    font-size: 28px;
+  }
+
+  .feature-card h2 {
+    font-size: 26px;
+  }
+
+  .feature-card p {
+    font-size: 15px;
+  }
+
+  .number {
+    width: 44px;
+    height: 44px;
+  }
+
+  .tag,
+  .strategy-tag {
+    width: 100%;
+    max-width: 220px;
+    height: 42px;
+    font-size: 13px;
+  }
+}

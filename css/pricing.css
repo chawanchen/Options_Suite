@@ -1,0 +1,31 @@
+/* Pricing pages: Black-Scholes / Binomial / Monte Carlo */
+.two-column-workspace {
+  display: grid;
+  grid-template-columns: minmax(320px, 0.9fr) minmax(460px, 1.7fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.stack-form { display: flex; flex-direction: column; gap: 14px; }
+.stack-form .form-row { grid-template-columns: 132px minmax(0, 1fr); }
+.stack-form .form-actions { margin-top: 4px; padding-top: 8px; }
+.page-result-panel { min-height: 306px; }
+.demo-result {
+  min-height: 230px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--light-muted);
+}
+.demo-result-icon { font-size: 38px; margin-bottom: 12px; }
+.demo-result h3 { margin: 0; color: var(--muted); font-size: 16px; }
+.demo-result p { margin: 8px 0 0; color: var(--light-muted); font-weight: 750; font-size: 14px; }
+
+@media (max-width: 900px) {
+  .two-column-workspace { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px) {
+  .stack-form .form-row { grid-template-columns: 1fr; }
+}

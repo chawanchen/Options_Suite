@@ -1,0 +1,46 @@
+:root {
+  --bg: #fffaf6;
+  --bg-soft: #fff5ee;
+  --card: rgba(255, 255, 255, 0.78);
+
+  --primary: #e6a982;
+  --primary-dark: #a96a46;
+  --primary-soft: #fff0e5;
+
+  --text: #4c372c;
+  --muted: #8b7668;
+  --light-muted: #c0aa9b;
+  --line: #f2dccd;
+
+  --shadow: 0 16px 42px rgba(177, 112, 70, 0.07);
+  --shadow-hover: 0 24px 56px rgba(177, 112, 70, 0.13);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+
+  font-family: "Microsoft JhengHei";
+
+  color: var(--text);
+
+  background:
+    radial-gradient(circle at top left, rgba(255, 226, 207, 0.46) 0, transparent 32%),
+    radial-gradient(circle at top right, rgba(255, 237, 220, 0.36) 0, transparent 28%),
+    linear-gradient(180deg, #fff7f1 0%, #fffcfa 48%, #fffaf6 100%);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select {
+  font-family: inherit;
+}
